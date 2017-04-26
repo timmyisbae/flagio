@@ -165,7 +165,6 @@ public class Player
         }
         else if(a == Direction.RIGHT) {
             dr += 0.2+ar;
-            System.out.println(ar);
             if(dr >= 1 && ar > 0) {
                 this.x += velocity;
                 dr = 0;
