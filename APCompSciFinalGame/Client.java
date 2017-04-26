@@ -24,11 +24,11 @@ import javax.swing.*;
  * line beginning with "MESSAGE " then all characters following
  * this string should be displayed in its message area.
  */
-public class ChatClient {
+public class Client {
 
     BufferedReader in;
     PrintWriter out;
-    JFrame frame = new JFrame("Chatter");
+    JFrame frame = new JFrame("Flag.io");
     JTextField textField = new JTextField(40);
     JTextArea messageArea = new JTextArea(8, 40);
     GamePanel panel = new GamePanel(new Dimension(500,500));
@@ -41,7 +41,7 @@ public class ChatClient {
      * only becomes editable AFTER the client receives the NAMEACCEPTED
      * message from the server.
      */
-    public ChatClient() {
+    public Client() {
 
         // Layout GUI
 //         textField.setEditable(false);
@@ -74,7 +74,7 @@ public class ChatClient {
             "Enter IP Address of the Server:",
             "Welcome to the Chatter",
             JOptionPane.QUESTION_MESSAGE);*/
-            return "10.215.56.234";
+            return "localhost";
     }
 
     /**
@@ -118,7 +118,7 @@ public class ChatClient {
      * Runs the client as an application with a closeable frame.
      */
     public static void main(String[] args) throws Exception {
-        ChatClient client = new ChatClient();
+        Client client = new Client();
         client.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         client.frame.setVisible(true);
         client.run();

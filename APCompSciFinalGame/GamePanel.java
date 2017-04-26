@@ -21,11 +21,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener
 
     PrintWriter out;
     Player player;
-    
+
     ArrayList<Player> players = new ArrayList<Player>();
-    
+
     ArrayList<Direction> direction = new ArrayList<Direction>();
-    
+    ArrayList<Direction> releasedKeys = new ArrayList<Direction>();
+
     public GamePanel(Dimension d) {
         super();
         this.setOpaque(true);
@@ -51,62 +52,73 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener
         repaint();
 
         if(direction.contains(Direction.UP)) {
-            
-            player.setY(player.getY() - (int)player.getVelocity());
+            player.moveUp();
         }
         if(direction.contains(Direction.DOWN)) {
-            
-            player.setY(player.getY() + (int)player.getVelocity());
+            player.moveDown();
         }
         if(direction.contains(Direction.LEFT)) {
-            
-            player.setX(player.getX() - (int)player.getVelocity());
+            player.moveLeft();
         }
         if(direction.contains(Direction.RIGHT)) {
-            
-            player.setX(player.getX() + (int)player.getVelocity());                
+            player.moveRight();
         }
-        
-        if(player.getX() > this.getWidth() - 1) {
-            player.setX(this.getWidth() - 1);
-        }
-        
-        if(player.getY() > this.getHeight() - 1) {
-            player.setY(this.getHeight() - 1);
-        }
-        
-        if(player.getX() < 0) {
-            player.setX(0);
-        }
-        
-        if(player.getY() < 0) {
-            player.setY(0);
-        }
-        
-    }
 
+        if(releasedKeys.contains(Direction.UP)) {
+            if(player.resetAcceleration(Direction.UP))
+                releasedKeys.remove(Direction.UP);
+        }
+        if(releasedKeys.contains(Direction.DOWN)) {
+            if(player.resetAcceleration(Direction.DOWN))
+                releasedKeys.remove(Direction.DOWN);
+        }
+        if(releasedKeys.contains(Direction.LEFT)) {
+            if(player.resetAcceleration(Direction.LEFT))
+                releasedKeys.remove(Direction.LEFT);
+        }
+        if(releasedKeys.contains(Direction.RIGHT)) {
+            if(player.resetAcceleration(Direction.RIGHT))
+                releasedKeys.remove(Direction.RIGHT);
+        }
+
+        if(player.getX() > this.getWidth() - player.getSize())
+            player.setX(this.getWidth() - player.getSize());
+
+        if(player.getX() < 0)
+            player.setX(0);
+
+        if(player.getY() > this.getHeight() - player.getSize())
+            player.setY(this.getHeight() - player.getSize());
+
+        if(player.getY() < 0)
+            player.setY(0);
+
+    }
     public void keyPressed(KeyEvent e) {
-        System.out.println(e.getKeyCode());
         if (out != null) {
             if(e.getKeyCode() == KeyEvent.VK_UP) {
                 System.out.println("1");
                 out.println("up");
-                direction.add(Direction.UP);
+                if(!direction.contains(Direction.UP))direction.add(Direction.UP);
+                if(releasedKeys.contains(Direction.UP))releasedKeys.remove(Direction.UP);
             }
             if(e.getKeyCode() == KeyEvent.VK_DOWN) {
                 System.out.println("2");     
                 out.println("down");
-                direction.add(Direction.DOWN);
+                if(!direction.contains(Direction.DOWN))direction.add(Direction.DOWN);
+                if(releasedKeys.contains(Direction.DOWN))releasedKeys.remove(Direction.DOWN);
             }
             if(e.getKeyCode() == KeyEvent.VK_LEFT) {
                 System.out.println("3");       
                 out.println("left");
-                direction.add(Direction.LEFT);
+                if(!direction.contains(Direction.LEFT))direction.add(Direction.LEFT);
+                if(releasedKeys.contains(Direction.LEFT))releasedKeys.remove(Direction.LEFT);
             }
             if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
                 System.out.println("4");
                 out.println("right");
-                direction.add(Direction.RIGHT);             
+                if(!direction.contains(Direction.RIGHT))direction.add(Direction.RIGHT);
+                if(releasedKeys.contains(Direction.RIGHT))releasedKeys.remove(Direction.RIGHT);
             }
             if(e.getKeyCode() == KeyEvent.VK_W)
                 out.println("up");
@@ -116,6 +128,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener
                 out.println("left");
             if(e.getKeyCode() == KeyEvent.VK_D)
                 out.println("right");
+            System.out.print("{");
+            for(Direction i : direction)
+                System.out.print(i + ",");
+            System.out.print("}");
         }
     }
 
@@ -123,15 +139,19 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener
         if (out != null) {
             if(e.getKeyCode() == KeyEvent.VK_UP) {
                 direction.remove(Direction.UP); 
+                if(!releasedKeys.contains(Direction.UP))releasedKeys.add(Direction.UP);  
             }
             if(e.getKeyCode() == KeyEvent.VK_DOWN) {
                 direction.remove(Direction.DOWN); 
+                if(!releasedKeys.contains(Direction.DOWN))releasedKeys.add(Direction.DOWN); 
             }
             if(e.getKeyCode() == KeyEvent.VK_LEFT) {
                 direction.remove(Direction.LEFT); 
+                if(!releasedKeys.contains(Direction.LEFT))releasedKeys.add(Direction.LEFT); 
             }
             if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                direction.remove(Direction.RIGHT);              
+                direction.remove(Direction.RIGHT);    
+                if(!releasedKeys.contains(Direction.RIGHT))releasedKeys.add(Direction.RIGHT); 
             }
             out.println("released");
         }       
@@ -147,9 +167,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener
 }
 
 enum Direction {
-        UP,
-        DOWN,
-        LEFT,
-        RIGHT,
-        NONE
-    }
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+    NONE
+}
