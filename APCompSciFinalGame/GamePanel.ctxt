@@ -1,6 +1,6 @@
 #BlueJ class context
-comment0.params=d
-comment0.target=GamePanel(java.awt.Dimension)
+comment0.params=d\ player
+comment0.target=GamePanel(java.awt.Dimension,\ Player)
 comment1.params=g
 comment1.target=void\ paintComponent(java.awt.Graphics)
 comment2.params=e

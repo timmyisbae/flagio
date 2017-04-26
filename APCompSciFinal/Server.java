@@ -50,7 +50,7 @@ public class Server {
      * spawns handler threads.
      */
     public static void main(String[] args) throws Exception {
-        System.out.println("The chat server is running.");
+        System.out.println("The flag.io server is running.");
         ServerSocket listener = new ServerSocket(PORT);
         try {
             while (true) {

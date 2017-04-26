@@ -35,10 +35,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener
 
     private int offsetX, offsetY;
 
-    public GamePanel(Dimension d) {
+    public GamePanel(Dimension d, Player player) {
         super();
 
-        player = new Player("Tim", 50, Color.BLUE, 225, 225, 1, 1);
+        this.player = player;
 
         try {
             background = ImageIO.read(new File("background.jpg"));
@@ -60,8 +60,21 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener
 
         g.drawImage(background, offsetX, offsetY, 4000, 4000, this);
 
-        //g.translate(-player.getX(), -player.getY());
         g.fillRect((this.getWidth() / 2) - player.getSize() / 2, (this.getHeight() / 2) - player.getSize() / 2, player.getSize(), player.getSize());
+
+        g.setColor(Color.WHITE);
+
+        // Get the FontMetrics
+        FontMetrics metrics = g.getFontMetrics(g.getFont());
+        // Determine the X coordinate for the text
+        int x = (this.getWidth() - metrics.stringWidth(player.getName())) / 2;
+        // Determine the Y coordinate for the text (note we add the ascent, as in java 2d 0 is top of the screen)
+        int y = ((this.getHeight() - metrics.getHeight()) / 2) + metrics.getAscent();
+        // Set the font
+        g.setFont(g.getFont());
+        // Draw the String
+        g.drawString(player.getName(), x, y);
+
         if(start) start = false;
     }
 
@@ -114,10 +127,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener
 
             offsetX = -player.getX();
             offsetY = -player.getY();
-            
+
             if(out!=null)
-            out.println("ID:" + player.getID() + "|X:" + player.getX() + "|Y:" + player.getY());
-            
+                out.println("ID:" + player.getID() + "|X:" + player.getX() + "|Y:" + player.getY());
+
         }
 
     }

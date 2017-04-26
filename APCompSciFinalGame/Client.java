@@ -31,7 +31,8 @@ public class Client {
     JFrame frame = new JFrame("Flag.io");
     JTextField textField = new JTextField(40);
     JTextArea messageArea = new JTextArea(8, 40);
-    GamePanel panel = new GamePanel(new Dimension(500,500));
+    Player player = new Player("name", 50, Color.BLUE, 225, 225, 1, 1);
+    GamePanel panel = new GamePanel(new Dimension(500,500), player);
 
     /**
      * Constructs the client by laying out the GUI and registering a
@@ -104,7 +105,9 @@ public class Client {
         while (true) {
             String line = in.readLine();
             if (line.startsWith("SUBMITNAME")) {
-                out.println(getName());
+                String name = getName();
+                out.println(name);
+                player.setName(name);
             } else if (line.startsWith("NAMEACCEPTED")) {
                 textField.setEditable(true);
                 panel.setOut(out);
